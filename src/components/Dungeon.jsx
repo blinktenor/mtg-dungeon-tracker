@@ -55,10 +55,10 @@ const dungeonRooms = {
   "Temple of Dumathoin": "Draw a card."
 };
 
-function DungeonRoom({ name, effect, isActive, onClick }) {
+function DungeonRoom({ name, effect, isActive, onClick, borderColor }) {
   return (
     <div 
-      className={`p-4 rounded-lg text-center shadow-lg inline-block mx-2 w-[calc(100%/3)] sm:w-[calc(100%/3)] md:w-[calc(100%/3)] lg:w-[calc(100%/3)] xl:w-[calc(100%/3)] cursor-pointer bg-gray-700 text-white ${isActive ? 'border-2 border-yellow-500' : ''}`}
+      className={`p-4 rounded-lg text-center shadow-lg inline-block mx-2 w-[calc(100%/3)] sm:w-[calc(100%/3)] md:w-[calc(100%/3)] lg:w-[calc(100%/3)] xl:w-[calc(100%/3)] cursor-pointer bg-gray-700 text-white ${isActive ? `border-2 ${borderColor}` : ''}`}
       onClick={onClick}
     >
       <h2 className="text-xl font-bold">{name}</h2>
@@ -67,7 +67,7 @@ function DungeonRoom({ name, effect, isActive, onClick }) {
   );
 }
 
-export default function DungeonExplorer() {
+export default function DungeonExplorer({ borderColor }) {
   const [selectedDungeon, setSelectedDungeon] = useState("Undercity");
   const [currentLevel, setCurrentLevel] = useState(-1);
   const [enteredRooms, setEnteredRooms] = useState({});
@@ -81,7 +81,7 @@ export default function DungeonExplorer() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-900 text-white">
+    <div className="flex flex-col items-center pb-4 bg-gray-900 text-white">
       <select 
         className="mb-4 p-2 rounded bg-gray-800 text-white"
         value={selectedDungeon} 
@@ -105,6 +105,7 @@ export default function DungeonExplorer() {
                 effect={dungeonRooms[room]} 
                 isActive={enteredRooms[room]} 
                 onClick={() => handleRoomClick(room, index)}
+                borderColor={borderColor}
               />
             ))}
           </div>
