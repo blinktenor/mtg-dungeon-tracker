@@ -58,7 +58,7 @@ const dungeonRooms = {
 function DungeonRoom({ name, effect, isActive, onClick }) {
   return (
     <div 
-      className={`p-4 rounded-lg text-center shadow-lg inline-block mx-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 cursor-pointer bg-gray-700 text-white ${isActive ? 'border-2 border-yellow-500' : ''}`}
+      className={`p-4 rounded-lg text-center shadow-lg inline-block mx-2 w-[calc(100%/3)] sm:w-[calc(100%/3)] md:w-[calc(100%/3)] lg:w-[calc(100%/3)] xl:w-[calc(100%/3)] cursor-pointer bg-gray-700 text-white ${isActive ? 'border-2 border-yellow-500' : ''}`}
       onClick={onClick}
     >
       <h2 className="text-xl font-bold">{name}</h2>
@@ -69,8 +69,8 @@ function DungeonRoom({ name, effect, isActive, onClick }) {
 
 export default function DungeonExplorer() {
   const [selectedDungeon, setSelectedDungeon] = useState("Undercity");
-  const [currentLevel, setCurrentLevel] = useState(0);
-  const [enteredRooms, setEnteredRooms] = useState({ "Secret Entrance": true });
+  const [currentLevel, setCurrentLevel] = useState(-1);
+  const [enteredRooms, setEnteredRooms] = useState({});
   const [showRemaining, setShowRemaining] = useState(false);
 
   const handleRoomClick = (room, level) => {
@@ -81,14 +81,14 @@ export default function DungeonExplorer() {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 min-h-screen bg-gray-900 text-white">
+    <div className="flex flex-col items-center min-h-screen bg-gray-900 text-white">
       <select 
         className="mb-4 p-2 rounded bg-gray-800 text-white"
         value={selectedDungeon} 
         onChange={(e) => {
           setSelectedDungeon(e.target.value);
-          setCurrentLevel(0);
-          setEnteredRooms({ [dungeons[e.target.value][0][0]]: true });
+          setCurrentLevel(-1);
+          setEnteredRooms({});
         }}
       >
         {Object.keys(dungeons).map((dungeon) => (
@@ -97,7 +97,7 @@ export default function DungeonExplorer() {
       </select>
       <div className="w-full max-w-4xl bg-gray-800 border border-gray-700 p-4 rounded-xl flex flex-col space-y-6">
         {dungeons[selectedDungeon].map((levelRooms, index) => (
-          <div key={index} className={`w-full flex justify-center gap-4 flex-wrap ${index > currentLevel + 1 && !showRemaining ? 'hidden' : ''}`}>
+          <div key={index} className={`w-full flex justify-center gap-4 ${index < currentLevel || index > currentLevel + 1 ? 'hidden' : ''}`}> 
             {levelRooms.map((room) => (
               <DungeonRoom 
                 key={room} 
